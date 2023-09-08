@@ -1,0 +1,23 @@
+### Good reference https://www.artillery.io/docs/reference/test-script
+
+config:
+  target: "https://alberta-ca-account-dev-hacncggtawb2a0hn.z01.azurefd.net/Pas.Account.SYST.Projects/services/api"
+  phases:
+    - duration: 1
+      name: Warm up
+      arrivalRate: 1
+      # rampTo: 1
+
+scenarios:
+  # We define one scenario:
+  - name: "Signin with email - Password exists"
+    flow:
+      - post:
+          url: "/passwordExists"
+          json:
+            userName: "mkc.eaqs@gmail.com"
+          capture:
+            json: "$"
+            as: "count"
+      - log: "Got 'password-exists-for-email' count as : {{ count }}"
+            

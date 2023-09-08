@@ -1,0 +1,23 @@
+### For apis: https://www.artillery.io/docs/reference/engines/http
+
+config:
+  target: "https://jsonplaceholder.typicode.com/todos"
+  phases:
+    - duration: 1
+      name: Get json placeholder content
+      arrivalRate: 1
+      # rampTo: 1
+
+scenarios:
+  # We define one scenario:
+  - name: "Get todos"
+    flow:
+      - get:
+          url: "/1"
+          capture:
+            json: "$"
+            as: "response"
+          expect:
+            - statusCode: 200
+      - log: "Got response as : {{ response }}"
+            
