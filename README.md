@@ -1,6 +1,6 @@
 # Getting Started with Artillery
 
-Run artillery scripts in bash or PowerShell
+Performance testing using [artillery](artillery.io)
 
 **Install**
 
@@ -16,33 +16,48 @@ artillery version
 ## Usage
 
 ### Scripts explained
-- **Get request**: see the `jsonplaceholder.yml` script
-- **Post request**: see the `booker.yml` script. Constructs the json payload for the request. Shows how to capture multiple values from the same json response
+- **Get request**: see the `api-get-jsonplaceholder.yml` script
+- **Post request**: see the `api-post-booker.yml` script. Constructs the json payload for the request. Shows how to capture multiple values from the same json response
 - **A sample load scenario**: see the `getting-started-first-test.yml` script
 
 ### Run tests
-Open a bash terminal, then:
+Run scripts in bash or PowerShell. I prefer working in a bash terminal, then:
 
 Run any script, and see full detail printed out on the terminal:
 
-`artillery run jsonplaceholder.yml`
+`artillery run api-get-jsonplaceholder.yml`
+
+You will see a full detail of perf metrics from this run printed on the console.
+
+To 'test' run a script, i.e. ignoring the loading scenarios in the script, you can run that script as follows:
+
+```sh
+artillery quick -c 1 -n 1 getting-started-first-test.yml
+
+# alternatively, you can also directly hit an api directly to see if it works before coding it into a script
+
+artillery quick -c 1 -n 1 https://httpbin.org/get
+
+# or, to suppress report output, but see that the content returns
+DEBUG=http:response artillery quick -c 1 -n 1 https://jsonplaceholder.typicode.com/todos/1 --quiet
+```
 
 ### Debugging and Console output
 To skip all that detail and only see log outputs from the script:
 
-`artillery run jsonplaceholder.yml --quiet`
+`artillery run api-get-jsonplaceholder.yml --quiet`
 
 Debug execution; I prefer to suppress the report output when I am debugging to see content, however, when running the test, remove the `--quiet` flag:
 
 ```sh
 # http header info
-DEBUG=http artillery run jsonplaceholder.yml --quiet
+DEBUG=http artillery run api-get-jsonplaceholder.yml --quiet
 
 # response details:
-DEBUG=http:response artillery run jsonplaceholder.yml --quiet
+DEBUG=http:response artillery run api-get-jsonplaceholder.yml --quiet
 
 # capture details
-DEBUG=http:capture artillery run jsonplaceholder.yml --quiet
+DEBUG=http:capture artillery run api-get-jsonplaceholder.yml --quiet
 
 ```
 
