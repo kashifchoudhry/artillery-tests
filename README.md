@@ -65,3 +65,4 @@ DEBUG=http:capture artillery run api-get-jsonplaceholder.yml --quiet
 - [Getting Started](https://www.artillery.io/docs/get-started/first-test)
 - [Understanding components of a test script](https://www.artillery.io/docs/reference/test-script)
 - [Working with APIs](https://www.artillery.io/docs/reference/engines/http)
+- [Expectations and assertions](https://www.artillery.io/docs/reference/extensions/expect)
