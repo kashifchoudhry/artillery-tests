@@ -1,5 +1,3 @@
-### For apis: https://www.artillery.io/docs/reference/engines/http
-
 config:
   target: "https://jsonplaceholder.typicode.com/todos"
   phases:
