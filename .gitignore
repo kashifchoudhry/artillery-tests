@@ -1,2 +1,3 @@
 # Exclude files
 sign-in-with-email.yml
+./startup/sign-in-with-email.yml
