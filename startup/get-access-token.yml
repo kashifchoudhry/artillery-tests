@@ -1,0 +1,69 @@
+---
+#########################################################################################
+# AUTHENTICATE AND GET BEARER TOKEN:
+# Scenario: Get bearer token
+#
+#########################################################################################
+config:
+  environments:
+    # when only using grant type, client id and client secret
+    alpha:
+      target: "<your-url>"
+      variables:
+        envLabel: "<your-label>"
+        url: "<oauth-source-url>oauth/token"
+        grant_type: "client_credentials"
+        client_id: "{{ $processEnvironment.ABCID }}"
+        client_secret: "{{ $processEnvironment.ABCSECRET }}"
+        audience: "<not-required-but-if-target-requires-it-then-identify>"
+    # when using grantype, username, password, client id and client secret
+    env2:
+      target: "<your-url>"
+      variables:
+        envLabel: "your-label"
+        url: "<auth-token-source-url>/oauth_token.do"
+        grant_type: "password"
+        username: "integration-config"
+        password: "{{ $processEnvironment.ABCPWD }}"
+        client_id: "{{ $processEnvironment.ABCCLIENTID }}"
+        client_secret: "{{ $processEnvironment.ABCCLIENTSECRET }}"
+  http:
+    timeout: 45
+  # phases:
+  #  - duration: 1
+  #    arrivalRate: 1
+  #    name: Just 1
+
+before:
+  flow:
+    # Get access token
+    - log: "Getting token"
+    - log: "url: {{ url }}"
+    - log: "gnt: {{ grant_type }}"
+    - log: "id : {{ client_id }}"
+    - log: "sec: {{ client_secret }}"
+    - log: "aud: {{ audience }}"
+    - post:
+        url: "{{ url }}"
+        headers:
+          Content_Type: application/x-www-form-urlencoded
+          Accept: application/json
+        form:
+          grant_type: "{{ grant_type }}"
+          username: "{{ username }}"
+          password: "{{ password }}"
+          client_id: "{{ client_id }}"
+          client_secret: "{{ client_secret }}"
+          audience: "{{ audience }}"
+        capture:
+          json: "$.access_token"
+          as: access_token
+        expect:
+          - statusCode: 200
+  #  - log: "Token: {{ access_token }}"
+
+scenarios:
+  - name: "Authenticate"
+    weight: 1
+    flow:
+      - log: "access token: {{ access_token }}"
